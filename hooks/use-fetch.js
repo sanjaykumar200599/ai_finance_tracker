@@ -1,5 +1,6 @@
 const { useState } = require("react")
 
+
 const useFetch =(cb)=>{
     const [data,setData] = useState(undefined);
     const [loading,setLoading]=useState(null);
@@ -17,9 +18,12 @@ const useFetch =(cb)=>{
         }
         catch(error){
             setError(error);
+        }finally{
+            setLoading(false);
         }
 
 };
 
 return { data,loading,error,fn,setData}
 };
+export default useFetch;
