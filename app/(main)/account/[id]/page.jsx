@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { getAccountWithTransactions } from "@/actions/account";
 import { BarLoader } from "react-spinners";
-// import { TransactionTable } from "../_components/transaction-table";
+import { TransactionTable } from "../_components/transaction-table";
 import { notFound } from "next/navigation";
 // import { AccountChart } from "../_components/account-chart";
 
@@ -28,7 +28,7 @@ export default async function AccountPage({ params }) {
         </div>
 
         <div className="text-right pb-2">
-          <div className="text-xl sm:text-2xl font-bold">
+          <div className="text-xl sm:text-2xl font-bold"> 
             ${parseFloat(account.balance).toFixed(2)}
           </div>
           <p className="text-sm text-muted-foreground">
@@ -45,11 +45,11 @@ export default async function AccountPage({ params }) {
       </Suspense> */}
 
       {/* Transactions Table */}
-      {/* <Suspense
+      <Suspense
         fallback={<BarLoader className="mt-4" width={"100%"} color="#9333ea" />}
       >
         <TransactionTable transactions={transactions} />
-      </Suspense> */}
+      </Suspense>
     </div>
   );
 }
