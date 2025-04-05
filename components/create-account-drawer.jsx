@@ -25,7 +25,8 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { createAccount } from "@/actions/dashboard";
 import { accountSchema } from "@/app/lib/schema";
-import useFetch from "@/hooks/use-Fetch";
+import useFetch from "@/hooks/use-fetch";
+
 
 export function CreateAccountDrawer({ children }) {
   const [open, setOpen] = useState(false);
