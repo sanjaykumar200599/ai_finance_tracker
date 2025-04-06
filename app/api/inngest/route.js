@@ -1,5 +1,5 @@
 import { inngest } from "@/lib/inngest/client";
-import { checkBudgetAlerts, helloWorld } from "@/lib/inngest/function";
+import { checkBudgetAlerts } from "@/lib/inngest/function";
 import { serve } from "inngest/next";
 
 
