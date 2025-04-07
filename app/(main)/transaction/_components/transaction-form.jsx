@@ -396,6 +396,10 @@ const AddTransactionForm = ({accounts,categories}) => {
   const isRecurring = watch("isRecurring");
   const date = watch("date");
 
+
+    const filteredCategories = categories.filter(
+    (category) => category.type === type
+  );
   return <form>
      {/* Receipt Scanner - Only show in create mode */}
 
@@ -463,6 +467,75 @@ const AddTransactionForm = ({accounts,categories}) => {
             <p className="text-sm text-red-500">{errors.accountId.message}</p>
           )}
         </div>
+
+          {/* categories */}
+               <div className="space-y-2">
+         <label className="text-sm font-medium">Category</label>
+        <Select
+          onValueChange={(value) => setValue("category", value)}
+          defaultValue={getValues("category")}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select category" />
+          </SelectTrigger>
+          <SelectContent>
+            {filteredCategories.map((category) => (
+              <SelectItem key={category.id} value={category.id}>
+                {category.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        {errors.category && (
+          <p className="text-sm text-red-500">{errors.category.message}</p>
+        )}
+      </div>
+
+
+    {/* Date */}
+    <div className="space-y-2">
+         <label className="text-sm font-medium">Date</label>
+        <Popover>
+           <PopoverTrigger asChild>
+             <Button
+              variant="outline"
+              className={cn(
+                "w-full pl-3 text-left font-normal",
+                !date && "text-muted-foreground"
+              )}
+            >
+              {date ? format(date, "PPP") : <span>Pick a date</span>}
+              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={(date) => setValue("date", date)}
+              disabled={(date) =>
+                date > new Date() || date < new Date("1900-01-01")
+              }
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+        {errors.date && (
+          <p className="text-sm text-red-500">{errors.date.message}</p>
+        )}
+      </div>
+
+
+      {/* Description */}
+   <div className="space-y-2">
+         <label className="text-sm font-medium">Description</label>
+         <Input placeholder="Enter description" {...register("description")} />
+        {errors.description && (
+          <p className="text-sm text-red-500">{errors.description.message}</p>
+        )}
+      </div>
+
+
       </div>
 
     </form>
