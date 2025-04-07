@@ -417,6 +417,7 @@ const AddTransactionForm = ({accounts,categories}) => {
   );
   return  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
      {/* Receipt Scanner - Only show in create mode */}
+     <ReceiptScanner onScanComplete={handleScanComplete} />
 
       {/* Type */}
        <div className="space-y-2">
