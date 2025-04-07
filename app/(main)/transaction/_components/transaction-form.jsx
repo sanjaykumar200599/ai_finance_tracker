@@ -365,7 +365,7 @@ import { transactionSchema } from "@/app/lib/schema";
 import { ReceiptScanner } from "./recipt-scanner";
 
 const AddTransactionForm = ({accounts,categories}) => {
-
+    const router=useRouter();
   const {
         register,
         handleSubmit,
@@ -396,13 +396,26 @@ const AddTransactionForm = ({accounts,categories}) => {
   const isRecurring = watch("isRecurring");
   const date = watch("date");
 
-  
+    const onSubmit = async(data) => {
+    const formData = {
+      ...data,
+      amount: parseFloat(data.amount),
+    };
+      transactionFn(formData);
+    };
 
+    useEffect(() => {
+    if (transactionResult?.success && !transactionLoading) {
+      toast.success("Transaction created successfully");
+      reset();
+      router.push(`/account/${transactionResult.data.accountId}`);
+    }
+  }, [transactionResult, transactionLoading]);
 
     const filteredCategories = categories.filter(
     (category) => category.type === type
   );
-  return <form className='space-y-6' onSubmit={handleSubmit(onSubmit)}>
+  return  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
      {/* Receipt Scanner - Only show in create mode */}
 
       {/* Type */}
@@ -472,7 +485,7 @@ const AddTransactionForm = ({accounts,categories}) => {
         </div>
 
           {/* categories */}
-               <div className="space-y-2">
+          <div className="space-y-2">
          <label className="text-sm font-medium">Category</label>
         <Select
           onValueChange={(value) => setValue("category", value)}
@@ -579,9 +592,9 @@ const AddTransactionForm = ({accounts,categories}) => {
         </div>
       )}
 
-       {/* Actions */}
+     {/* Actions */}
        <div className="flex gap-4">
-       <Button
+         <Button
           type="button"
           variant="outline"
           className="w-full"
@@ -589,20 +602,9 @@ const AddTransactionForm = ({accounts,categories}) => {
         >
           Cancel
         </Button>
-        <Button type="submit" className="w-full" disabled={transactionLoading}>
-          {/* {transactionLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              {editMode ? "Updating..." : "Creating..."}
-            </>
-          ) : editMode ? (
-            "Update Transaction"
-          ) : (
-            "Create Transaction"
-          )} */}Create Transaction
-        </Button>
+        <Button type="submit" className="w-full" disabled={transactionLoading}>Create Transaction</Button>
       </div>
-      </form>
+ </form>
   
 };
 
