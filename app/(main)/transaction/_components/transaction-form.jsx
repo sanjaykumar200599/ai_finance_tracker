@@ -396,11 +396,13 @@ const AddTransactionForm = ({accounts,categories}) => {
   const isRecurring = watch("isRecurring");
   const date = watch("date");
 
+  
+
 
     const filteredCategories = categories.filter(
     (category) => category.type === type
   );
-  return <form>
+  return <form className='space-y-6' onSubmit={handleSubmit(onSubmit)}>
      {/* Receipt Scanner - Only show in create mode */}
 
       {/* Type */}
@@ -436,6 +438,7 @@ const AddTransactionForm = ({accounts,categories}) => {
           {errors.amount && (
             <p className="text-sm text-red-500">{errors.amount.message}</p>
           )}
+        </div>
         </div>
 
         <div className="space-y-2">
@@ -535,10 +538,71 @@ const AddTransactionForm = ({accounts,categories}) => {
         )}
       </div>
 
-
+             {/* Recurring Toggle */}
+       <div className="flex flex-row items-center justify-between rounded-lg border p-4">
+         <div className="space-y-0.5">
+           <label className="text-base font-medium">Recurring Transaction</label>
+           <div className="text-sm text-muted-foreground">
+             Set up a recurring schedule for this transaction
+           </div>
+         </div>
+         <Switch
+          checked={isRecurring}
+          onCheckedChange={(checked) => setValue("isRecurring", checked)}
+        />
       </div>
 
-    </form>
+
+         {/* Recurring Interval */}
+       {isRecurring && (
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Recurring Interval</label>
+          <Select
+            onValueChange={(value) => setValue("recurringInterval", value)}
+            defaultValue={getValues("recurringInterval")}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select interval" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="DAILY">Daily</SelectItem>
+              <SelectItem value="WEEKLY">Weekly</SelectItem>
+              <SelectItem value="MONTHLY">Monthly</SelectItem>
+              <SelectItem value="YEARLY">Yearly</SelectItem>
+            </SelectContent>
+          </Select>
+          {errors.recurringInterval && (
+            <p className="text-sm text-red-500">
+              {errors.recurringInterval.message}
+            </p>
+          )}
+        </div>
+      )}
+
+       {/* Actions */}
+       <div className="flex gap-4">
+       <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={() => router.back()}
+        >
+          Cancel
+        </Button>
+        <Button type="submit" className="w-full" disabled={transactionLoading}>
+          {/* {transactionLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {editMode ? "Updating..." : "Creating..."}
+            </>
+          ) : editMode ? (
+            "Update Transaction"
+          ) : (
+            "Create Transaction"
+          )} */}Create Transaction
+        </Button>
+      </div>
+      </form>
   
 };
 
