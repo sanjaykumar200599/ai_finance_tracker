@@ -428,7 +428,7 @@ const AddTransactionForm = ({accounts,categories}) => {
       }
       toast.success("Receipt scanned successfully");
     }
-  };
+    };
 
   return  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
      {/* Receipt Scanner - Only show in create mode */}
