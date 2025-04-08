@@ -364,8 +364,10 @@ import { createTransaction, updateTransaction } from "@/actions/transaction";
 import { transactionSchema } from "@/app/lib/schema";
 import { ReceiptScanner } from "./recipt-scanner";
 
-const AddTransactionForm = ({accounts,categories}) => {
+const AddTransactionForm = ({accounts,categories,editMode=false,initialData=null}) => {
     const router=useRouter();
+    const searchParams=useSearchParams();
+    const editId=searchParams.get("edit");
   const {
         register,
         handleSubmit,
@@ -376,7 +378,21 @@ const AddTransactionForm = ({accounts,categories}) => {
         reset,
       } =useForm({
       resolver: zodResolver(transactionSchema),
-      defaultValues:{
+      defaultValues:
+      editMode && initialData
+      ?{
+            type: initialData.type,
+            amount: initialData.amount.toString(),
+            description: initialData.description,
+            accountId: initialData.accountId,
+            category: initialData.category,
+            date: new Date(initialData.date),
+            isRecurring: initialData.isRecurring,
+            ...(initialData.recurringInterval && {
+              recurringInterval: initialData.recurringInterval,
+            }),
+      }
+      :{
             type: "EXPENSE",
             amount: "",
             description:"",
@@ -390,7 +406,7 @@ const AddTransactionForm = ({accounts,categories}) => {
     loading: transactionLoading,
     fn: transactionFn,
     data: transactionResult,
-  } = useFetch(createTransaction);
+  } = useFetch(editMode ? updateTransaction : createTransaction);
 
   const type = watch("type");
   const isRecurring = watch("isRecurring");
@@ -401,16 +417,24 @@ const AddTransactionForm = ({accounts,categories}) => {
       ...data,
       amount: parseFloat(data.amount),
     };
+
+    if(editMode){
+      transactionFn(editId,formData)
+    } else{
       transactionFn(formData);
+    }
     };
 
     useEffect(() => {
     if (transactionResult?.success && !transactionLoading) {
-      toast.success("Transaction created successfully");
+      toast.success(editMode 
+       ? "Transaction updated successfully"
+       : "Transaction created successfully"
+      );
       reset();
       router.push(`/account/${transactionResult.data.accountId}`);
     }
-  }, [transactionResult, transactionLoading]);
+  }, [transactionResult, transactionLoading,editMode]);
 
     const filteredCategories = categories.filter(
     (category) => category.type === type
