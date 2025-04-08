@@ -47,7 +47,7 @@ import {
 
 export default function EmailTemplate({
   userName = "",
-  type ="monthly-report",
+  type ="budget-report",
   data = {},
   //Also add the budget report here
 }) {
