@@ -456,7 +456,7 @@ const AddTransactionForm = ({accounts,categories,editMode=false,initialData=null
 
   return  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
      {/* Receipt Scanner - Only show in create mode */}
-     <ReceiptScanner onScanComplete={handleScanComplete} />
+     {!editMode &&<ReceiptScanner onScanComplete={handleScanComplete} />}
 
       {/* Type */}
        <div className="space-y-2">
@@ -642,7 +642,18 @@ const AddTransactionForm = ({accounts,categories,editMode=false,initialData=null
         >
           Cancel
         </Button>
-        <Button type="submit" className="w-full" disabled={transactionLoading}>Create Transaction</Button>
+        <Button type="submit" className="w-full" disabled={transactionLoading}>
+          {transactionLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {editMode ? "Updating..." : "Creating..."}
+            </>
+          ) : editMode ? (
+            "Update Transaction"
+          ) : (
+            "Create Transaction"
+          )}
+          </Button>
       </div>
  </form>
   
