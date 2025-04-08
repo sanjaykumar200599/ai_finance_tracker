@@ -320,6 +320,7 @@ import { revalidatePath } from "next/cache";
 
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
 const serializeAmount = (obj) => ({
   ...obj,
   amount: obj.amount.toNumber(),
@@ -330,7 +331,7 @@ export async function createTransaction(data) {
       const { userId } = await auth();
       if (!userId) throw new Error("Unauthorized");
   
-     // do not use it causes error
+    // do not use it causes error
    // Get request data for ArcJet
     // const req = await request();
 
