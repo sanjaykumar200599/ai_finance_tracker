@@ -1,1 +1,1 @@
-Deployement Link: https://ai-finance-tracker-two.vercel.app/
+Deployment Link: https://ai-finance-tracker-two.vercel.app/
