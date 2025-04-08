@@ -9,7 +9,7 @@ import {
   Text,
 } from "@react-email/components";
 
-// Dummy data for preview
+//Dummy data for preview
 // const PREVIEW_DATA = {
 //   monthlyReport: {
 //     userName: "John Doe",
@@ -46,9 +46,10 @@ import {
 // };
 
 export default function EmailTemplate({
-  userName = "piyush",
-  type ="budget-report",
+  userName = "",
+  type ="monthly-report",
   data = {},
+  //Also add the budget report here
 }) {
   if (type === "monthly-report") {
     return (
